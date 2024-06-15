@@ -14,16 +14,13 @@ add_executable(
 )
 
 # Link the static version of the Crypto++ library
-#set(CMAKE_EXE_LINKER_FLAGS "-static")
+# set(CMAKE_EXE_LINKER_FLAGS "-static")
 
 # Dependency with Cryptopp 8 installed with
 # sudo apt-get install libcrypto++8 libcrypto++-dev
 target_link_libraries(sri cryptopp)
+
 # Find the CURL library
 find_package(CURL REQUIRED)
-
 # Link the CURL library
-target_link_libraries(sri ${CURL_LIBRARIES})
-
-# Include the CURL headers
-include_directories(${CURL_INCLUDE_DIR})
+target_link_libraries(${PROJECT_NAME} CURL::libcurl)

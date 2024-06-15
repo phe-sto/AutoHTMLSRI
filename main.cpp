@@ -134,13 +134,12 @@ map<string, string> getSrcHash(const string &strHTMLFilePath, SRI &sri) {
                         } else { // Download the strPath using Curl lib
                             CURL *curl;
                             CURLcode res;
-                            FILE *file;
                             curl = curl_easy_init();
-                            const char *chTempPath = tmpnam(nullptr);
                             if (curl) {
-                                file = fopen(
-                                        chTempPath, "wb"
-                                );
+                                FILE *file = tmpfile();
+                                const char *chTempPath = to_string(
+                                        fileno(file)
+                                ).c_str();
                                 curl_easy_setopt(
                                         curl, CURLOPT_URL, strPath.c_str()
                                 );

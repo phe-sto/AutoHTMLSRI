@@ -1,5 +1,8 @@
 # Auto HTML SRI
 
+SRI provides a powerful defence against code injection, supply chain attacks,
+man in the middle and other security risks.
+
 This is a simple tool to generate the SRI hashes of an HTML file and
 generates an update HTML.
 I.e., you don't need anymore to care and waste time to generate the hash of the resources

@@ -13,25 +13,17 @@
  * @note C++17
  ******************************************************************************/
 #include "SRI.h"
+#include "HTMLFile.h"
 #include <iostream>
 #include <map>
-#include <sys/stat.h>
 // TCLAP for the CLI, it requires https://launchpad.net/ubuntu/+source/tclap
 // Installed using apt-get install libtclap-dev
 #include <tclap/CmdLine.h>
 #include <tclap/UnlabeledValueArg.h>
 #include <tclap/ValueArg.h>
 #include <tclap/ArgException.h>
-#include <fstream>
-#include <regex>
 #include <cryptopp/files.h>
-// Use Curl library to download remote resources
-#include <curl/curl.h>
-// For HTML parsing downloaded from https://htmlcxx.sourceforge.net/
-// as libhtmlcxx-dev package is not working
-#include "lib/htmlcxx-0.86/html/ParserDom.h"
 
-using namespace std;
 
 /*******************************************************************************
  * Generic function printing an error strMessage and exit
@@ -55,121 +47,6 @@ int wrongArguments(const string &strMessage) {
     return errorMessageAndExit(
             "Argument error: " + strMessage, 2
     );
-}
-
-/*******************************************************************************
- * Method to get the content of a file as a string.
- * Used to get the content of the HTML input.
- * @param strHTMLFilePath The path to the file to read
- * */
-string getStringFromLocalPath(const string &strHTMLFilePath) {
-    ifstream t(strHTMLFilePath);
-    string str(
-            (
-                    istreambuf_iterator<char>(t)
-            ),
-            istreambuf_iterator<char>()
-    );
-    return str;
-}
-
-/*******************************************************************************
- * Function to check if a file exists.
- * @param strFilePath The file strFilePath to check
- * @return A boolean true if the file exists, false otherwise
- */
-inline bool bIsFile(const string &strFilePath) {
-    struct stat buffer{};
-    return (stat(strFilePath.c_str(), &buffer) == 0);
-}
-
-/*******************************************************************************
- * Function to get the hash of all the src tags in the HTML file.
- * It uses HTMLCXX to parse the HTML file and get the src tags.
- * If the resource is local, it uses the SRI class to get the hash.
- * If the resource is remote, it uses Curl to download the resource and then
- * get the hash.
- * */
-map<string, string> getSrcHash(const string &strHTMLFilePath, SRI &sri) {
-
-    htmlcxx::HTML::ParserDom parser;
-    tree<htmlcxx::HTML::Node> dom = parser.parseTree(strHTMLFilePath);
-
-    //Dump all links in the tree
-    tree<htmlcxx::HTML::Node>::iterator it = dom.begin();
-    tree<htmlcxx::HTML::Node>::iterator end = dom.end();
-
-    // Output all the tag and child tag recursively found in the document
-    map<string, string> mapResHash;
-    for (; it != end; ++it) {
-        if (it->isTag()) {
-            // Only does tags according to
-            // https://developer.mozilla.org/fr/docs/Web/Security/Subresource_Integrity
-            if (it->tagName() == "script" || it->tagName() == "link") {
-                it->parseAttributes();
-
-                // Pairs of attributes and values
-                map<string, string> pairs = it->attributes();
-                for (
-                        auto iter = pairs.begin();
-                        iter != pairs.end();
-                        ++iter
-                        ) {
-
-                    // Only does tags and attributes according to
-                    // https://developer.mozilla.org/fr/docs/Web/Security/Subresource_Integrity
-                    if ((iter->first == "src" && it->tagName() == "script") ||
-                        (iter->first == "href" && it->tagName() == "link")) {
-                        string strPath = iter->second;
-                        // Turn an eventual absolute to a relative one
-                        // A HTTP server does not have the same absolute strPath...
-                        if (strPath[0] == '/') {
-                            strPath.insert(0, ".");
-                        }
-                        // Nothing to download, it is a local file
-                        if (bIsFile(strPath)) {
-                            mapResHash[iter->second] = sri.getHash(
-                                    strPath.c_str()
-                            );
-                        } else { // Download the strPath using Curl lib
-                            CURL *curl;
-                            CURLcode res;
-                            curl = curl_easy_init();
-                            if (curl) {
-                                FILE *file = tmpfile();
-                                const char *chTempPath = to_string(
-                                        fileno(file)
-                                ).c_str();
-                                curl_easy_setopt(
-                                        curl, CURLOPT_URL, strPath.c_str()
-                                );
-                                curl_easy_setopt(
-                                        curl, CURLOPT_WRITEFUNCTION, NULL
-                                );
-                                curl_easy_setopt(
-                                        curl, CURLOPT_WRITEDATA, file
-                                );
-                                res = curl_easy_perform(curl);
-                                // Always close a file!
-                                fclose(file);
-                                // If download went fine, get the hash of the
-                                // temp file
-                                if (res == CURLE_OK) {
-                                    mapResHash[iter->second] = sri.getHash(
-                                            chTempPath
-                                    );
-                                }
-                                // In any case delete file and clean the download
-                                remove(chTempPath);
-                                curl_easy_cleanup(curl);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    return mapResHash;
 }
 
 
@@ -243,7 +120,7 @@ int main(int argc, char *argv[]) {
         // Get the value parsed by the inputArg
         strHTMLFilePath = inputArg.getValue();
         // Check if the argument is a valid file path
-        if (!bIsFile(strHTMLFilePath)) {
+        if (!HTMLFile::bIsFile(strHTMLFilePath)) {
             return wrongArguments(
                     "The file: " + strHTMLFilePath + " does not exist."
             );
@@ -266,33 +143,18 @@ int main(int argc, char *argv[]) {
 
 
     // Turn HTML file into a string
-    string strHTML = getStringFromLocalPath(strHTMLFilePath);
+    string strHTML = HTMLFile::getStringFromLocalPath(strHTMLFilePath);
+
     SRI sri = SRI(algorithm);
 
     // Get the hash for all the src tags in the HTML file
     map<string, string> mapResHash;
     try {
-        mapResHash = getSrcHash(strHTML, sri);
+        HTMLFile htmlFile(strHTMLFilePath.c_str(), sri);
+        //mapResHash = getSrcHash(strHTML, sri);
+        htmlFile.writeResultingHTMLFile();
+        return 0;
     } catch (CryptoPP::FileSource::OpenErr &e) {
         return errorMessageAndExit(e.what(), 3);
     }
-
-    // Modify the HTML file with the SRI hash using regex
-    for (const auto &pair: mapResHash) {
-        // Remove potential existing integrity attribute
-        strHTML = regex_replace(
-                strHTML,
-                regex(R"(\sintegrity=.*("|')(\s|$))"),
-                " "
-        );
-        // Replace the src with the src and the hash
-        strHTML = regex_replace(
-                strHTML,
-                regex(pair.first + "(\"|\')"),
-                pair.first + "\" integrity=\"" + pair.second + "\""
-        );
-    }
-    // Output the new HTML file
-    cout << strHTML << endl;
-    return 0;
 }

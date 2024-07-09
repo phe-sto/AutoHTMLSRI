@@ -11,6 +11,8 @@ add_executable(
         lib/htmlcxx-0.86/html/ParserDom.cc
         lib/htmlcxx-0.86/html/Node.cc
         lib/htmlcxx-0.86/html/ParserSax.cc
+        HTMLFile.h
+        HTMLFile.cpp
 )
 
 # Link the static version of the Crypto++ library

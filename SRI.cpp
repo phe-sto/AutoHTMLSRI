@@ -57,6 +57,14 @@ SRI::SRI(Algorithm algorithm) {
 }
 
 /*******************************************************************************
+ * Constructor using sha384 as default algorithm
+ * */
+SRI::SRI() {
+    this->algorithm = sha384Algorithm;
+
+}
+
+/*******************************************************************************
  * The method that returns the hash based on the algorithm.
  * The hash is a string formated with the algorithm followed by the hash as
  * expected in the HTML security attribute.
@@ -148,3 +156,5 @@ string SRI::getSha512Hash(const char *chFSPath) {
     );
     return strDigest;
 }
+
+

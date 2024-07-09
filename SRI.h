@@ -41,6 +41,11 @@ public:
     explicit SRI(Algorithm algorithm);
 
     /***************************************************************************
+     * Constructor using sha384 as default algorithms
+     * */
+    SRI();
+
+    /***************************************************************************
      * The method that returns the hash based on the algorithm
      * @param aString The string to hash
      * @return The hash as a string

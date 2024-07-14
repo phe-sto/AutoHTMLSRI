@@ -3,8 +3,8 @@
  * Test results are obtained using the following command (from https://developer.mozilla.org/fr/docs/Web/Security/Subresource_Integrity):
  * cat <file> | openssl dgst -sha384 -binary | openssl enc -base64 -A
  * */
-#include "lib/doctest.h"
-#include "SRI.h"
+#include "../lib/doctest.h"
+#include "../src/SRI.h"
 
 SRI defaultSRI = SRI();
 SRI sha384SRI = SRI(sha384Algorithm);

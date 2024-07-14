@@ -12,7 +12,7 @@
 #include <iostream>
 // For HTML parsing downloaded from https://htmlcxx.sourceforge.net/
 // as libhtmlcxx-dev package is not working
-#include "lib/htmlcxx-0.86/html/ParserDom.h"
+#include "../lib/htmlcxx-0.86/html/ParserDom.h"
 
 using namespace std;
 

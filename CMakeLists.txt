@@ -6,13 +6,13 @@ set(CMAKE_CXX_STANDARD 17)
 
 # My code to build
 add_executable(
-        sri main.cpp
-        SRI.cpp
+        sri src/main.cpp
+        src/SRI.cpp
         lib/htmlcxx-0.86/html/ParserDom.cc
         lib/htmlcxx-0.86/html/Node.cc
         lib/htmlcxx-0.86/html/ParserSax.cc
-        HTMLFile.h
-        HTMLFile.cpp
+        src/HTMLFile.h
+        src/HTMLFile.cpp
 )
 
 # Link the static version of the Crypto++ library
@@ -29,7 +29,7 @@ target_link_libraries(${PROJECT_NAME} CURL::libcurl)
 
 # Test SRI class
 add_executable(
-        sri-test sri-test.cpp
-        SRI.cpp
+        sri-test tests/sri.cpp
+        src/SRI.cpp
 )
 target_link_libraries(sri-test cryptopp)

@@ -13,7 +13,6 @@ add_executable(
         lib/htmlcxx-0.86/html/ParserSax.cc
         HTMLFile.h
         HTMLFile.cpp
-        sri-test.cpp
 )
 
 # Link the static version of the Crypto++ library
@@ -27,4 +26,10 @@ target_link_libraries(sri cryptopp)
 find_package(CURL REQUIRED)
 # Link the CURL library
 target_link_libraries(${PROJECT_NAME} CURL::libcurl)
-add_executable(sri-test sri-test.cpp)
+
+# Test SRI class
+add_executable(
+        sri-test sri-test.cpp
+        SRI.cpp
+)
+target_link_libraries(sri-test cryptopp)

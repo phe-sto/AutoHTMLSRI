@@ -152,7 +152,7 @@ int main(int argc, char *argv[]) {
     try {
         HTMLFile htmlFile(strHTMLFilePath.c_str(), sri);
         //mapResHash = getSrcHash(strHTML, sri);
-        htmlFile.writeResultingHTMLFile();
+        cout << htmlFile.resultingHTMLFile() << endl;
         return 0;
     } catch (CryptoPP::FileSource::OpenErr &e) {
         return errorMessageAndExit(e.what(), 3);

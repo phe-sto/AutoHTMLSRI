@@ -48,7 +48,7 @@ string HTMLFile::getStringFromLocalPath(const string &strHTMLFilePath) {
  * Method to write the resulting HTML file with the SRI hash.
  * It uses regex to modify the HTML file with the SRI hash.
  * */
-void HTMLFile::writeResultingHTMLFile() {
+string HTMLFile::resultingHTMLFile() {
     string strHTML = getStringFromLocalPath(this->chFSPath);
     // Modify the HTML file with the SRI hash using regex
     for (const auto &pair: mapResHash) {
@@ -65,8 +65,8 @@ void HTMLFile::writeResultingHTMLFile() {
                 pair.first + "\" integrity=\"" + pair.second + "\""
         );
     }
-    // Output the new HTML file
-    cout << strHTML << endl;
+    // Return the new HTML file as a string
+    return strHTML;
 }
 
 /*******************************************************************************

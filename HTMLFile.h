@@ -44,7 +44,7 @@ public:
     * Method to write the resulting HTML file with the SRI hash.
     * It uses regex to modify the HTML file with the SRI hash.
     * */
-    void writeResultingHTMLFile();
+    string resultingHTMLFile();
 
     /***************************************************************************
     * Method to get the content of a file as a string.

@@ -25,7 +25,9 @@ using namespace std;
 HTMLFile::HTMLFile(const char *chFSPath, SRI &sri) {
     this->chFSPath = chFSPath;
     this->sri = sri;
-    this->mapResHash = HTMLFile::getSrcHash(chFSPath, this->sri);
+    this->mapResHash = HTMLFile::getSrcHash(
+            chFSPath, this->sri
+    );
 }
 
 /*******************************************************************************

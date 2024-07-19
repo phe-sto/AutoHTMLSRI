@@ -122,4 +122,14 @@ TEST_SUITE("HTMLFile") {
         }
     }
 
+    TEST_CASE("Test static getStringFromLocalPath") {
+        CHECK(HTMLFile::getStringFromLocalPath("small.html") == "<html><body>hey</body></html>");
+
+    }
+
+    TEST_CASE("Test static bIsFile") {
+        CHECK(HTMLFile::bIsFile(STR_HTML_FILE_PATH) == true);
+
+    }
+
 }

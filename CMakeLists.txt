@@ -29,7 +29,20 @@ target_link_libraries(${PROJECT_NAME} CURL::libcurl)
 
 # Test SRI class
 add_executable(
-        sri-test tests/sri.cpp
+        sri-test tests/SRI.cpp
         src/SRI.cpp
 )
 target_link_libraries(sri-test cryptopp)
+
+# Test HTMLFile class
+add_executable(
+        html-test tests/HTMLFile.cpp
+        src/SRI.cpp
+        lib/htmlcxx-0.86/html/ParserDom.cc
+        lib/htmlcxx-0.86/html/Node.cc
+        lib/htmlcxx-0.86/html/ParserSax.cc
+        src/HTMLFile.h
+        src/HTMLFile.cpp
+)
+target_link_libraries(html-test cryptopp)
+target_link_libraries(html-test CURL::libcurl)

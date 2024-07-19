@@ -24,10 +24,9 @@ using namespace std;
  * */
 HTMLFile::HTMLFile(const char *chFSPath, SRI &sri) {
     this->chFSPath = chFSPath;
+    this->strHTML = getStringFromLocalPath(this->chFSPath);
     this->sri = sri;
-    this->mapResHash = HTMLFile::getSrcHash(
-            chFSPath, this->sri
-    );
+    this->mapResHash = this->getSrcHash();
 }
 
 /*******************************************************************************
@@ -51,24 +50,25 @@ string HTMLFile::getStringFromLocalPath(const string &strHTMLFilePath) {
  * It uses regex to modify the HTML file with the SRI hash.
  * */
 string HTMLFile::resultingHTMLFile() {
-    string strHTML = getStringFromLocalPath(this->chFSPath);
+    string strResultingHTML = this->strHTML;
+    // Remove potential existing integrity attribute
+    strResultingHTML = regex_replace(
+            strResultingHTML,
+            regex(R"(\sintegrity=.*("|')(\s|$))"),
+            " "
+    );
+
     // Modify the HTML file with the SRI hash using regex
-    for (const auto &pair: mapResHash) {
-        // Remove potential existing integrity attribute
-        strHTML = regex_replace(
-                strHTML,
-                regex(R"(\sintegrity=.*("|')(\s|$))"),
-                " "
-        );
+    for (const auto &pair: this->mapResHash) {
         // Replace the src with the src and the hash
-        strHTML = regex_replace(
-                strHTML,
+        strResultingHTML = regex_replace(
+                strResultingHTML,
                 regex(pair.first + "(\"|\')"),
                 pair.first + "\" integrity=\"" + pair.second + "\""
         );
     }
     // Return the new HTML file as a string
-    return strHTML;
+    return strResultingHTML;
 }
 
 /*******************************************************************************
@@ -79,10 +79,12 @@ string HTMLFile::resultingHTMLFile() {
  * If the resource is remote, it uses Curl to download the resource and then
  * get the hash.
  * */
-map<string, string> HTMLFile::getSrcHash(const string &strHTMLFilePath, SRI &sri) {
+map<string, string> HTMLFile::getSrcHash() {
 
     htmlcxx::HTML::ParserDom parser;
-    tree<htmlcxx::HTML::Node> dom = parser.parseTree(strHTMLFilePath);
+    tree<htmlcxx::HTML::Node> dom = parser.parseTree(
+            this->strHTML
+    );
 
     //Dump all links in the tree
     tree<htmlcxx::HTML::Node>::iterator it = dom.begin();
@@ -113,40 +115,41 @@ map<string, string> HTMLFile::getSrcHash(const string &strHTMLFilePath, SRI &sri
                         }
                         // Nothing to download, it is a local file
                         if (bIsFile(strPath)) {
-                            hash[pair.second] = sri.getHash(
+                            hash[pair.second] = this->sri.getHash(
                                     strPath.c_str()
                             );
                         } else { // Download the strPath using Curl lib
                             CURL *curl;
                             CURLcode res;
+                            curl_global_init(CURL_GLOBAL_ALL);
                             curl = curl_easy_init();
                             if (curl) {
-                                FILE *file = tmpfile();
                                 const char *chTempPath;
-                                chTempPath = to_string(
-                                        fileno(file)
-                                ).c_str();
+                                chTempPath = tmpnam(nullptr);
+                                FILE *file = fopen(chTempPath, "wb");
                                 curl_easy_setopt(
                                         curl, CURLOPT_URL, strPath.c_str()
                                 );
                                 curl_easy_setopt(
                                         curl, CURLOPT_WRITEFUNCTION, NULL
                                 );
-                                curl_easy_setopt(
-                                        curl, CURLOPT_WRITEDATA, file
-                                );
-                                res = curl_easy_perform(curl);
-                                // Always close a file!
-                                fclose(file);
-                                // If download went fine, get the hash of the
-                                // temp file
-                                if (res == CURLE_OK) {
-                                    hash[pair.second] = sri.getHash(
-                                            chTempPath
+                                if (file) {
+                                    curl_easy_setopt(
+                                            curl, CURLOPT_WRITEDATA, file
                                     );
+                                    res = curl_easy_perform(curl);
+                                    // If download went fine, get the hash of the
+                                    // temp file
+                                    if (res == CURLE_OK) {
+                                        fseek(file, 0, SEEK_SET);
+                                        hash[pair.second] = this->sri.getHash(
+                                                chTempPath
+                                        );
+                                    }
+
+                                    // Always close a file!
+                                    fclose(file);
                                 }
-                                // In any case delete file and clean the download
-                                remove(chTempPath);
                                 curl_easy_cleanup(curl);
                             }
                         }

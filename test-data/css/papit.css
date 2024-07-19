@@ -1,0 +1,235 @@
+body, h1, h2, h3, h4, h5, h6 {
+    font-display: swap;
+}
+
+body {
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 1rem
+}
+
+ol, p, ul {
+    margin: 0 0 1rem
+}
+
+a:hover {
+    text-decoration: underline
+}
+
+section {
+    overflow: auto
+}
+
+.bx--header__container {
+    justify-content: space-between;
+    width: 100%;
+    height: 100%
+}
+
+.bx--header__container, .bx--header__logo, .bx--header__mark {
+    display: flex;
+    align-items: center
+}
+
+.bx--header__logo {
+    margin-right: 16px
+}
+
+.bx--header__logo svg {
+    height: 2rem;
+    width: 2rem;
+    fill: currentColor
+}
+
+.bx--header__name {
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: .03em;
+    text-transform: uppercase
+}
+
+.bx--header__name--prefix {
+    margin-right: 16px;
+    color: #fff;
+    text-decoration: none
+}
+
+.bx--header__menu-trigger svg {
+    fill: #fff
+}
+
+.bx--header__menu-bar {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0
+}
+
+.bx--header__menu-item {
+    margin-right: 24px;
+    padding: 0;
+    position: relative;
+    text-align: left
+}
+
+.bx--header__menu-item:last-child {
+    margin-right: 0
+}
+
+.bx--header__menu-item--link {
+    color: #fff;
+    text-decoration: none
+}
+
+.bx--header__menu-item--link:focus, .bx--header__menu-item--link:hover {
+    color: #c6e0ff
+}
+
+.bx--footer__main {
+    align-items: center
+}
+
+.bx--footer__description {
+    font-size: 1rem;
+    margin: 0
+}
+
+.bx--footer__link {
+    font-size: 1rem;
+    color: #555;
+    text-decoration: none;
+    margin-left: 1rem
+}
+
+.bx--footer__link:hover {
+    text-decoration: underline
+}
+
+.image-container {
+    display: inline-block;
+    margin: 10px;
+    vertical-align: middle
+}
+
+.image-container img {
+    display: block;
+    max-width: 100%;
+    height: auto
+}
+
+.image-wrapper {
+    text-align: center
+}
+
+.bx--header {
+    display: flex;
+    font-size: large;
+    background-color: #8a3ffc;
+    color: #fff;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    position: relative;
+    padding: 1rem;
+}
+
+.bx--text-input, .bx--text-area {
+    background-color: white;
+}
+
+.customer-logo {
+    vertical-align: middle;
+    padding: 2%
+}
+
+@media only screen and (max-width: 992px) {
+    .ibm-top-page-icon {
+        display: none;
+    }
+
+    .bx--footer__main, .bx--header__menu-bar {
+        display: none
+    }
+
+    .bx--header {
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .bx--content {
+        padding: 0 !important;
+        text-align: center;
+        margin-top: 0 !important;
+        overflow-y: auto;
+        height: calc(100vh - 4rem);
+        margin-bottom: 2rem
+    }
+
+    .customer-logo {
+        width: 40%;
+    }
+
+    .mobile-footer {
+        cursor: pointer;
+        height: 2rem;
+        width: 100%;
+        z-index: 1;
+        left: 0;
+        right: 0;
+        background-color: #f4f4f4;
+        color: #525252;
+        position: fixed;
+        bottom: 0
+    }
+
+    .bx--dropdown-text {
+        font-size: 1rem;
+        font-weight: 600;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .ibm-top-page-icon {
+        width: 10%;
+        max-height: 10%
+    }
+
+    .mobile-footer {
+        display: none
+    }
+
+    .bx--content {
+        margin-top: 0 !important;
+        padding: 1rem 5rem 1rem 5rem;
+        overflow-y: auto;
+        height: calc(100vh - 9rem)
+    }
+
+    .bx--footer {
+        height: 6rem;
+        width: 100%;
+        z-index: 1;
+        left: 0;
+        right: 0;
+        background-color: #f4f4f4;
+        color: #525252;
+        padding: 1rem 2rem;
+        position: fixed;
+        bottom: 0
+    }
+
+    .bx--header {
+        font-size: large;
+        align-items: center;
+    }
+
+    .customer-logo {
+        width: 15%;
+        padding: 2%
+    }
+}

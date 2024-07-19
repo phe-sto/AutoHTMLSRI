@@ -1,0 +1,30 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "url": "https://www.papit.fr",
+  "description": "Infogestion et Conseil IT, MOA, développement Python, CoBOL, JS, NativeScript",
+  "image": "https://www.papit.fr//img/logo-papit.png",
+  "name": "PapIT",
+  "sameAs": [
+    "https://www.societe.com/societe/papit-852070986.html",
+    "https://www.pagesjaunes.fr/siret/85207098600017",
+    "https://www.verif.com/societe/PAPIT-852070986",
+    "https://www.infogreffe.fr/entreprise-societe/852070986-papit-740219B005760000.html",
+    "https://www.malt.fr/profile/papit",
+    "https://www.linkedin.com/in/papit",
+    "https://github.com/phe-sto"
+  ],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+33604413615",
+    "email": "services@papit.fr",
+    "contactType": "Customer service"
+  },
+  "address": {
+    "@type": "postalAddress",
+    "streetAddress": "592 route de Couvette",
+    "addressLocality": "Fillinges",
+    "postalCode": "74250",
+    "addressCountry": "France"
+  }
+}

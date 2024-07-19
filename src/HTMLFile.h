@@ -31,7 +31,7 @@ public:
     * If the resource is remote, it uses Curl to download the resource and then
     * get the hash.
     * */
-    static map<string, string> getSrcHash(const string &strHTMLFilePath, SRI &sri);
+    map<string, string> getSrcHash();
 
     /***************************************************************************
     * Function to check if a file exists.
@@ -56,6 +56,7 @@ public:
 private:
     const char *chFSPath;
     SRI sri;
+    string strHTML;
 
 
 };

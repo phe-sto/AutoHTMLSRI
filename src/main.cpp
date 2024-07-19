@@ -147,8 +147,6 @@ int main(int argc, char *argv[]) {
 
     SRI sri = SRI(algorithm);
 
-    // Get the hash for all the src tags in the HTML file
-    map<string, string> mapResHash;
     try {
         HTMLFile htmlFile(strHTMLFilePath.c_str(), sri);
         //mapResHash = getSrcHash(strHTML, sri);

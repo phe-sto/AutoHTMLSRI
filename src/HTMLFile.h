@@ -19,21 +19,6 @@ public:
     HTMLFile(const char *chFSPath, SRI &sriParam);
 
     /***************************************************************************
-     * mapResHash is public mainly for testing purposes
-     */
-    map<string, string> mapResHash;
-
-    /***************************************************************************
-    * Function to get the hash of all the src tags in the HTML file.
-    * The parser is used according to https://developer.mozilla.org/fr/docs/Web/Security/Subresource_Integrity
-    * It uses HTMLCXX to parse the HTML file and get the src tags.
-    * If the resource is local, it uses the SRI class to get the hash.
-    * If the resource is remote, it uses Curl to download the resource and then
-    * get the hash.
-    * */
-    map<string, string> getSrcHash();
-
-    /***************************************************************************
     * Function to check if a file exists.
     * @param strFilePath The file strFilePath to check
     * @return A boolean true if the file exists, false otherwise
@@ -47,18 +32,31 @@ public:
     string resultingHTMLFile();
 
     /***************************************************************************
+     * hash of all the src tags in the HTML file
+     */
+    map<string, string> mapResHash;
+
+
+    /***************************************************************************
     * Method to get the content of a file as a string.
     * Used to get the content of the HTML input.
     * @param strHTMLFilePath The path to the file to read
     * */
     static string getStringFromLocalPath(const string &strHTMLFilePath);
-
 private:
     const char *chFSPath;
     SRI sri;
     string strHTML;
 
-
+    /***************************************************************************
+    * Function to get the hash of all the src tags in the HTML file.
+    * The parser is used according to https://developer.mozilla.org/fr/docs/Web/Security/Subresource_Integrity
+    * It uses HTMLCXX to parse the HTML file and get the src tags.
+    * If the resource is local, it uses the SRI class to get the hash.
+    * If the resource is remote, it uses Curl to download the resource and then
+    * get the hash.
+    * */
+    map<string, string> getSrcHash();
 };
 
 

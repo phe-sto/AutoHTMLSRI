@@ -3,6 +3,7 @@
  * Test results are obtained using the following command (from https://developer.mozilla.org/fr/docs/Web/Security/Subresource_Integrity):
  * cat <file> | openssl dgst -sha384 -binary | openssl enc -base64 -A
  * */
+
 #include "../lib/doctest.h"
 #include "../src/HTMLFile.h"
 
@@ -127,8 +128,13 @@ TEST_SUITE("HTMLFile") {
 
     }
 
-    TEST_CASE("Test static bIsFile") {
+    TEST_CASE("Test static bIsFile with a right path") {
         CHECK(HTMLFile::bIsFile(STR_HTML_FILE_PATH) == true);
+
+    }
+
+    TEST_CASE("Test static bIsFile with a wrong path") {
+        CHECK(HTMLFile::bIsFile("dkljdgg.html") == false);
 
     }
 

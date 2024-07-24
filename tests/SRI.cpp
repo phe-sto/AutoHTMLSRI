@@ -14,7 +14,7 @@ TEST_SUITE("SHA256") {
         map<string, string> sha256FileHash = {
                 {"index2.html",     "sha256-TXXv1+7Ja3pgmjoUZZyP4aFf1q03sgTDufk+EuAdDnc="},
                 {"data.html",       "sha256-/ZVanFW9c+qgjBPSYrF2nVkH7WOqo4XeG//uAOSVHd8="},
-                {"utiles.html",     "sha256-oGWOT1Mc4sTMRf1sxRQJkQZ3a6Vhs5Mm28XrUGqY6G4="},
+                {"utiles.html",     "sha256-TrUZPIQBTwLqlfHW0qDSgne7N8LUDollY82jO3MXwtQ="},
                 {"references.html", "sha256-GTj3kKoyFUO6ZD8jsFT8H7Troy+Zzct8jUop/QLEwpQ="},
                 {"contact.html",    "sha256-hCYwhz7hKxii9BPxCUGSU8F8scHWvR1WdVs8LEwAeFY="}
         };
@@ -38,7 +38,7 @@ TEST_SUITE("SHA384") {
     map<string, string> sha384FileHash = {
             {"index2.html",     "sha384-279AoLfGRS+l3d2F+njZFi8hwsVxMU298xbicVdnKn3yIJGV+qKX3t6kbC/4N+Ot"},
             {"data.html",       "sha384-Mb6+mP2HdNj18m+mr9a6bnJtZAR7AQUsI1FT1RTN8J1oEplnjY2gq+sjjhX3njnT"},
-            {"utiles.html",     "sha384-yaD0WwXGPHqgwUZnC+HklSykoY1s8l/VdMNwh6FV6IPtwYJppmOkyg/lC6qFuKd6"},
+            {"utiles.html",     "sha384-PzIbmVFlKHWVpWqAsJ6jz5DjuyMZd8WGVu+USnZSFg/bCBCRqqTbaD44FxwwkFvq"},
             {"references.html", "sha384-Quv570PMVcsWb2JqoltAfQhgwwF329h5astSNFlYOrDMOh7V9OAE9UCDBuH+oL2Q"},
             {"contact.html",    "sha384-tT+C6dq4xvWDptyII7bKwureMBwfMe0s+Yke7KeHs674FO87L3N6FPmGgt35au46"}
     };
@@ -80,7 +80,7 @@ TEST_SUITE("SHA512") {
         map<string, string> sha512FileHash = {
                 {"index2.html",     "sha512-H9NbQSP5bFn31ci63DV2acvz3Lnht4fKpuW5HYnmtBmf6fFlrghG6QvHvh4yRHBqaNpVpH/snmaqvxHqfoXyhg=="},
                 {"data.html",       "sha512-ZELM8HQjhl04aMX8fRbZ76aWm5oMx3PfMaN+8LKsAD46+//MQ6EaT+VtueVGA05xjoTvquQyOaA0d57dkpcH6g=="},
-                {"utiles.html",     "sha512-UHEQtP5y0WsUIvjiMWEIMQ/O++HLqKf4k+hjuSmvZ1YW7a40tgjDKjp8eIYf5OsxdkgJeZS76mohyQTvGS2+SA=="},
+                {"utiles.html",     "sha512-YBn+TQDI5qdeaKccvgKRPluw6YghloyYSB6HP4AFKu9dUGL9O2y3GSEcq0QxVbV4iKniZbR1ME27tWUlPulX3Q=="},
                 {"references.html", "sha512-9RMeGicHH++NHENyVCgoTXKsfzR64CeiM0bwd22Yvs4chuADuA2plF3ZMbqfsM3A/yT9xncfIuuhaPa1ZuYEAQ=="},
                 {"contact.html",    "sha512-CXxXngTeJD+ya3ZBNZ6r7695GzQxFJI+TSBo5pA9risYd5qgSxIlLRVAoKQ2aWylwksdFuTFXn0D9YIRP3UsCw=="}
         };

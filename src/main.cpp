@@ -141,15 +141,11 @@ int main(int argc, char *argv[]) {
         );
     }
 
-
-    // Turn HTML file into a string
-    string strHTML = HTMLFile::getStringFromLocalPath(strHTMLFilePath);
-
     SRI sri = SRI(algorithm);
 
     try {
         HTMLFile htmlFile(strHTMLFilePath.c_str(), sri);
-        //mapResHash = getSrcHash(strHTML, sri);
+
         cout << htmlFile.resultingHTMLFile() << endl;
         return 0;
     } catch (CryptoPP::FileSource::OpenErr &e) {

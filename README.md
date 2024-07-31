@@ -32,14 +32,15 @@ sudo apt-get install libcrypto++8 libcurl4
 
 ## Development dependencies:
 
-Dependencies with `cmake`, `libcrypto++8`, `libcrypto++-dev`, `libtclap-dev`
-`libcurl4` are required.
+Dependencies with `cmake`, `libcrypto++-dev`, `libtclap-dev` and `libcurl-dev` are required.
 
 On Debian like distribution, you can install them with:
 
 ```bash
-sudo apt-get install cmake libcrypto++8 libcrypto++-dev libtclap-dev libcurl4
+sudo apt-get install cmake libcrypto++-dev libtclap-dev libcurl-dev
 ```
+
+Plus, of course, a C++ compiler.
 
 ## Check dynamically linked libraries:
 
@@ -51,6 +52,17 @@ ldd <path to executable>
 
 ```bash
 cmake CMakelists.txt
+```
+
+## Docker
+
+A DockerFile ease the installation of the tool, it only builds the CLI, not the
+tests.
+You can build the docker image and use the tool with:
+
+```bash
+docker build .
+docker run <Image ID> test-data/index2.html -a sha512
 ```
 
 ## License
